@@ -47,6 +47,19 @@
       <p>Total: S/. {{ calcularTotal() }}</p>
     </div>
 
+    <div class="comprobante">
+      <label>Tipo Comprobante:</label>
+      <select [(ngModel)]="tipoComprobante">
+        <option value="Boleta">Boleta</option>
+        <option value="Factura">Factura</option>
+      </select>
+
+      <label *ngIf="tipoComprobante === 'Boleta'">DNI Cliente:</label>
+      <label *ngIf="tipoComprobante === 'Factura'">RUC Cliente:</label>
+      <input type="text" [(ngModel)]="documentoCliente"
+             [placeholder]="tipoComprobante === 'Boleta' ? 'Ingrese DNI' : 'Ingrese RUC'">
+    </div>
+
     <div class="metodo-pago">
       <label>Método de Pago:</label>
       <select [(ngModel)]="metodoPago">

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Producto } from '../../model/producto';
-import { ProductoService } from '../../servicios/producto';
-import { TipoProductoService } from '../../servicios/tipo-producto';
+import { HttpClient } from '@angular/common/http';
 import { FiltroTipoPipe } from '../../pipes/filtro-tipo-pipe';
+import { ProductoService } from '../../servicios/producto';
+import { Producto } from '../../model/producto';
 
 @Component({
   selector: 'app-nueva-venta',
@@ -22,9 +22,14 @@ export class NuevaVentaComponent implements OnInit {
   carrito: any[] = [];
   metodoPago: string = 'Efectivo';
 
+  tipoComprobante: string = 'Boleta';
+  documentoCliente: string = '';
+
+  private apiUrl = 'http://localhost:8080/api/ventas';
+
   constructor(
     private productoService: ProductoService,
-    private tipoProductoService: TipoProductoService
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -52,7 +57,44 @@ export class NuevaVentaComponent implements OnInit {
   }
 
   finalizarVenta(): void {
-    console.log('Venta finalizada', this.carrito, this.metodoPago);
-    // Aquí llamarías a tu API de ventas
+  if (!this.documentoCliente.trim()) {
+    alert(`Debe ingresar ${this.tipoComprobante === 'Boleta' ? 'DNI' : 'RUC'} del cliente.`);
+    return;
   }
+
+  const payload = {
+    tipoComprobante: this.tipoComprobante,
+    documentoCliente: this.documentoCliente,
+    metodoPago: this.metodoPago,
+    items: this.carrito.map(item => ({
+      productoId: item.producto.id,
+      cantidad: item.cantidad
+    }))
+  };
+
+  this.http.post(this.apiUrl, payload, {
+    responseType: 'blob',
+    withCredentials: true  // 🔥 importante para enviar la cookie de sesión
+  }).subscribe({
+    next: (blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `venta_${this.tipoComprobante}_${this.documentoCliente}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+
+      alert('Venta registrada correctamente.');
+      this.carrito = [];
+      this.documentoCliente = '';
+    },
+    error: (err) => {
+      console.error('Error al registrar venta', err);
+      alert('Error al registrar venta');
+    }
+  });
+}
+
 }
