@@ -17,13 +17,13 @@ export class ProductosAdminComponent implements OnInit {
   productos: Producto[] = [];
   tiposProducto: TipoProducto[] = [];
 
-  nuevoProducto: Producto = {
-    id: 0,
+  // Adaptado a tu ProductoRequest / ProductoResponse
+  nuevoProducto = {
     nombre: '',
     descripcion: '',
     precio: 0,
     stock: 0,
-    tipoProductoId: undefined
+    tipoProductoId: null as number | null
   };
 
   editandoId: number | null = null;
@@ -39,68 +39,61 @@ export class ProductosAdminComponent implements OnInit {
   }
 
   cargarProductos(): void {
-    this.productoService.obtenerProductos().subscribe(
-      (productos) => this.productos = productos,
-      (err) => console.error('Error al cargar productos', err)
-    );
+    this.productoService.obtenerProductos().subscribe({
+      next: (productos) => this.productos = productos,
+      error: (err) => console.error('Error al cargar productos', err)
+    });
   }
 
   cargarTiposProducto(): void {
-    this.tipoProductoService.obtenerTiposProducto().subscribe(
-      (tipos) => this.tiposProducto = tipos,
-      (err) => console.error('Error al cargar tipos', err)
-    );
+    this.tipoProductoService.obtenerTiposProducto().subscribe({
+      next: (tipos) => this.tiposProducto = tipos,
+      error: (err) => console.error('Error al cargar tipos', err)
+    });
   }
 
   guardarProducto(): void {
-  if (this.editandoId) {
-    const productoParaActualizar = {
-      id: this.editandoId,
-      nombre: this.nuevoProducto.nombre,
-      descripcion: this.nuevoProducto.descripcion,
-      precio: this.nuevoProducto.precio,
-      stock: this.nuevoProducto.stock,
-      tipoProductoId: this.nuevoProducto.tipoProductoId
-    };
-
-    this.productoService.actualizarProducto(this.editandoId, productoParaActualizar).subscribe(
-      () => {
-        this.cargarProductos();
-        this.resetFormulario();
-      },
-      (err) => console.error('Error al actualizar', err)
-    );
-  } else {
-    this.nuevoProducto.id = 0;
-    this.productoService.crearProducto(this.nuevoProducto).subscribe(
-      () => {
-        this.cargarProductos();
-        this.resetFormulario();
-      },
-      (err) => console.error('Error al crear', err)
-    );
+    if (this.editandoId) {
+      this.productoService.actualizarProducto(this.editandoId, this.nuevoProducto).subscribe({
+        next: () => {
+          this.cargarProductos();
+          this.resetFormulario();
+        },
+        error: (err) => console.error('Error al actualizar', err)
+      });
+    } else {
+      this.productoService.crearProducto(this.nuevoProducto).subscribe({
+        next: () => {
+          this.cargarProductos();
+          this.resetFormulario();
+        },
+        error: (err) => console.error('Error al crear', err)
+      });
+    }
   }
-}
-
 
   editarProducto(producto: Producto): void {
-  this.nuevoProducto = {
-    id: producto.id, 
-    nombre: producto.nombre,
-    descripcion: producto.descripcion,
-    precio: producto.precio,
-    stock: producto.stock,
-    tipoProductoId: producto.tipoProducto?.id
-  };
-  this.editandoId = producto.id ?? null;
-}
+    this.nuevoProducto = {
+      nombre: producto.nombre,
+      descripcion: producto.descripcion,
+      precio: producto.precio,
+      stock: producto.stock,
+      tipoProductoId: producto.tipoProductoId ?? null
+    };
+    this.editandoId = producto.id ?? null;
+  }
 
+  confirmarEliminacion(id: number): void {
+    if (confirm("¿Está seguro de eliminar este producto? Esta acción no se puede deshacer.")) {
+      this.eliminarProducto(id);
+    }
+  }
 
   eliminarProducto(id: number): void {
-    this.productoService.eliminarProducto(id).subscribe(
-      () => this.cargarProductos(),
-      (err) => console.error('Error al eliminar', err)
-    );
+    this.productoService.eliminarProducto(id).subscribe({
+      next: () => this.cargarProductos(),
+      error: (err) => console.error('Error al eliminar', err)
+    });
   }
 
   cancelarEdicion(): void {
@@ -109,12 +102,11 @@ export class ProductosAdminComponent implements OnInit {
 
   private resetFormulario(): void {
     this.nuevoProducto = {
-      id: 0,
       nombre: '',
       descripcion: '',
       precio: 0,
       stock: 0,
-      tipoProductoId: undefined
+      tipoProductoId: null
     };
     this.editandoId = null;
   }

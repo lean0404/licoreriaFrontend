@@ -18,10 +18,10 @@
         <td>{{ producto.descripcion }}</td>
         <td>{{ producto.precio }}</td>
         <td>{{ producto.stock }}</td>
-        <td>{{ producto.tipoProducto?.nombre }}</td>
+        <td>{{ producto.tipoProductoNombre }}</td>
         <td>
           <button (click)="editarProducto(producto)">✏️</button>
-          <button (click)="eliminarProducto(producto.id!)">🗑️</button>
+          <button (click)="confirmarEliminacion(producto.id!)">🗑️</button>
         </td>
       </tr>
     </tbody>
@@ -47,7 +47,7 @@
       <select [(ngModel)]="nuevoProducto.tipoProductoId" name="tipoProductoId" required>
         <option [ngValue]="null" disabled selected>Seleccione un tipo</option>
         <option *ngFor="let tipo of tiposProducto" [ngValue]="tipo.id">
-        {{ tipo.nombre }}
+          {{ tipo.nombre }}
         </option>
       </select>
 

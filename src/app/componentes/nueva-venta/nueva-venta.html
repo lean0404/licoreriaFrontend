@@ -2,19 +2,24 @@
   <h2>Nueva Venta</h2>
 
   <div class="filtros">
-    <label>Filtrar por tipo:</label>
-    <select [(ngModel)]="filtroTipo">
-      <option value="">Todos</option>
-      <option *ngFor="let tipo of tipos" [value]="tipo">{{ tipo }}</option>
-    </select>
+    <label>Buscar (tipo o nombre):</label>
+    <input type="text" [(ngModel)]="filtroTexto" placeholder="Ej: Whisky o Johnnie">
+
+    <label>Precio mínimo:</label>
+    <input type="number" [(ngModel)]="precioMin">
+
+    <label>Precio máximo:</label>
+    <input type="number" [(ngModel)]="precioMax">
   </div>
 
   <div class="productos-grid">
-    <div class="producto-card" *ngFor="let producto of productos | filtroTipo:filtroTipo">
+    <div class="producto-card"
+      *ngFor="let producto of productos | filtroTipo:filtroTexto:precioMin:precioMax">
       <h3>{{ producto.nombre }}</h3>
       <p>{{ producto.descripcion }}</p>
       <p>Precio: S/. {{ producto.precio }}</p>
       <p>Stock: {{ producto.stock }}</p>
+      <p>Tipo: {{ producto.tipoProductoNombre }}</p>
       <button (click)="agregarProducto(producto)">Añadir</button>
     </div>
   </div>
