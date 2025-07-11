@@ -1,0 +1,19 @@
+<div class="usuarios-container">
+  <h2>👤 Registro de Usuarios</h2>
+
+  <form (ngSubmit)="registrarUsuario()" #form="ngForm" class="usuario-form">
+    <label>Username:</label>
+    <input [(ngModel)]="nuevoUsuario.username" name="username" required />
+
+    <label>Password:</label>
+    <input type="password" [(ngModel)]="nuevoUsuario.password" name="password" required />
+
+    <label>Rol:</label>
+    <select [(ngModel)]="nuevoUsuario.roles[0]" name="roles">
+      <option value="USER">USER</option>
+      <option value="ADMIN">ADMIN</option>
+    </select>
+
+    <button type="submit" [disabled]="form.invalid">Registrar Usuario</button>
+  </form>
+</div>

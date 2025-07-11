@@ -1,0 +1,64 @@
+.vendedor-layout {
+  display: flex;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+
+  .sidebar {
+    width: 220px;
+    background: #1a2b40;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+
+    .usuario-info {
+      h3 {
+        margin: 0 0 20px;
+        text-align: center;
+      }
+    }
+
+    .menu {
+      button {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 10px;
+        background: #324a63;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        border-radius: 6px;
+        transition: background 0.3s;
+
+        &:hover {
+          background: #4b6b8f;
+        }
+      }
+    }
+
+    .logout {
+      margin-top: auto;
+
+      button {
+        width: 100%;
+        padding: 10px;
+        background: #c0392b;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        border-radius: 6px;
+        transition: background 0.3s;
+
+        &:hover {
+          background: #e74c3c;
+        }
+      }
+    }
+  }
+
+  .contenido {
+    flex: 1;
+    padding: 30px;
+    background: #f7f9fa;
+  }
+}

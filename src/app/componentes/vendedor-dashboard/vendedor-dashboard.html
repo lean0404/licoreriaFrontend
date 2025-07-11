@@ -1,0 +1,21 @@
+<div class="vendedor-layout">
+  <aside class="sidebar">
+    <div class="usuario-info">
+      <h3>{{ username }}</h3>
+    </div>
+
+    <nav class="menu">
+      <button (click)="irANuevaVenta()">🛒 Nueva Venta</button>
+      <button>📜 Historial Ventas</button>
+    </nav>
+
+    <div class="logout">
+      <button (click)="cerrarSesion()">🔓 Cerrar Sesión</button>
+    </div>
+  </aside>
+
+  <main class="contenido">
+    <h1>Bienvenido al Panel del Vendedor</h1>
+    <p>Selecciona una opción para empezar.</p>
+  </main>
+</div>

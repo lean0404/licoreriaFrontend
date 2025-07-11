@@ -1,0 +1,32 @@
+<div class="admin-layout">
+  <aside class="sidebar">
+    <div class="usuario-info">
+      <h3>{{ username }}</h3>
+    </div>
+
+    <nav class="menu">
+      <button (click)="gestionarProductos()">📦 Productos</button>
+      <button (click)="gestionarUsuarios()">👤 Usuarios</button>
+      <button (click)="verReportes()">📊 Reportes</button>
+    </nav>
+
+    <div class="logout">
+      <button (click)="cerrarSesion()">🔓 Cerrar Sesión</button>
+    </div>
+  </aside>
+
+  <main class="contenido">
+    <ng-container *ngIf="mostrarProductos">
+      <app-productos-admin></app-productos-admin>
+    </ng-container>
+
+    <ng-container *ngIf="mostrarUsuarios">
+      <app-usuarios-admin></app-usuarios-admin>
+    </ng-container>
+
+    <ng-container *ngIf="!mostrarProductos && !mostrarUsuarios">
+      <h1>Bienvenido al Panel de Administrador</h1>
+      <p>Selecciona una opción del menú para continuar.</p>
+    </ng-container>
+  </main>
+</div>

@@ -1,0 +1,56 @@
+<div class="nueva-venta-layout">
+  <h2>Nueva Venta</h2>
+
+  <div class="filtros">
+    <label>Filtrar por tipo:</label>
+    <select [(ngModel)]="filtroTipo">
+      <option value="">Todos</option>
+      <option *ngFor="let tipo of tipos" [value]="tipo">{{ tipo }}</option>
+    </select>
+  </div>
+
+  <div class="productos-grid">
+    <div class="producto-card" *ngFor="let producto of productos | filtroTipo:filtroTipo">
+      <h3>{{ producto.nombre }}</h3>
+      <p>{{ producto.descripcion }}</p>
+      <p>Precio: S/. {{ producto.precio }}</p>
+      <p>Stock: {{ producto.stock }}</p>
+      <button (click)="agregarProducto(producto)">Añadir</button>
+    </div>
+  </div>
+
+  <div class="carrito" *ngIf="carrito.length > 0">
+    <h3>Carrito</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of carrito">
+          <td>{{ item.producto.nombre }}</td>
+          <td>{{ item.cantidad }}</td>
+          <td>S/. {{ item.cantidad * item.precioUnitario }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="total">
+      <p>Total: S/. {{ calcularTotal() }}</p>
+    </div>
+
+    <div class="metodo-pago">
+      <label>Método de Pago:</label>
+      <select [(ngModel)]="metodoPago">
+        <option value="Efectivo">Efectivo</option>
+        <option value="Yape">Yape</option>
+        <option value="Tarjeta">Tarjeta</option>
+      </select>
+    </div>
+
+    <button (click)="finalizarVenta()">Finalizar Venta</button>
+  </div>
+</div>

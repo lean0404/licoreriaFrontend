@@ -1,0 +1,60 @@
+<div class="productos-container">
+  <h2>📦 Gestión de Productos</h2>
+
+  <table class="productos-table">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Precio (S/.)</th>
+        <th>Stock</th>
+        <th>Tipo</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let producto of productos">
+        <td>{{ producto.nombre }}</td>
+        <td>{{ producto.descripcion }}</td>
+        <td>{{ producto.precio }}</td>
+        <td>{{ producto.stock }}</td>
+        <td>{{ producto.tipoProducto?.nombre }}</td>
+        <td>
+          <button (click)="editarProducto(producto)">✏️</button>
+          <button (click)="eliminarProducto(producto.id!)">🗑️</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="formulario-producto">
+    <h3>{{ editandoId !== null ? 'Editar Producto' : 'Nuevo Producto' }}</h3>
+
+    <form (ngSubmit)="guardarProducto()" #form="ngForm">
+      <label>Nombre:</label>
+      <input [(ngModel)]="nuevoProducto.nombre" name="nombre" required />
+
+      <label>Descripción:</label>
+      <input [(ngModel)]="nuevoProducto.descripcion" name="descripcion" required />
+
+      <label>Precio:</label>
+      <input type="number" [(ngModel)]="nuevoProducto.precio" name="precio" required />
+
+      <label>Stock:</label>
+      <input type="number" [(ngModel)]="nuevoProducto.stock" name="stock" required />
+
+      <label>Tipo de Producto:</label>
+      <select [(ngModel)]="nuevoProducto.tipoProductoId" name="tipoProductoId" required>
+        <option [ngValue]="null" disabled selected>Seleccione un tipo</option>
+        <option *ngFor="let tipo of tiposProducto" [ngValue]="tipo.id">
+        {{ tipo.nombre }}
+        </option>
+      </select>
+
+      <button type="submit" [disabled]="form.invalid">
+        {{ editandoId !== null ? 'Actualizar' : 'Agregar' }}
+      </button>
+      <button type="button" (click)="cancelarEdicion()" *ngIf="editandoId !== null">Cancelar</button>
+    </form>
+  </div>
+</div>
