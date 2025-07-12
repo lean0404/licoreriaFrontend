@@ -6,6 +6,7 @@ import { AdminDashboardComponent } from './componentes/admin-dashboard/admin-das
 import { ProductosAdminComponent } from './componentes/productos-admin/productos-admin';
 import { VendedorDashboardComponent } from './componentes/vendedor-dashboard/vendedor-dashboard';
 import { NuevaVentaComponent } from './componentes/nueva-venta/nueva-venta';
+import { VendedorHistorialVentasComponent } from './componentes/vendedor-historial-ventas/vendedor-historial-ventas';
 
 import { adminGuard, vendedorGuard } from './auth.guard';
 
@@ -31,6 +32,11 @@ export const routes: Routes = [
   {
     path: 'ventas/nueva',
     component: NuevaVentaComponent,
+    canActivate: [vendedorGuard]
+  },
+  {
+    path: 'historial',
+    component: VendedorHistorialVentasComponent,
     canActivate: [vendedorGuard]
   },
 

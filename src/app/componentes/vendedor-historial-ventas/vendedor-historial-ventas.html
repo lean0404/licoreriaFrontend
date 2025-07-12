@@ -1,0 +1,38 @@
+<div class="historial-layout">
+  <h2>Mi Historial de Ventas</h2>
+
+  <div class="filtro-fechas">
+    <label>Desde: <input type="date" [(ngModel)]="fechaDesde"></label>
+    <label>Hasta: <input type="date" [(ngModel)]="fechaHasta"></label>
+    <button (click)="filtrarPorFechas()">Buscar</button>
+  </div>
+
+  <table *ngIf="ventas.length > 0; else sinVentas">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Fecha</th>
+        <th>Método</th>
+        <th>Tipo</th>
+        <th>Documento</th>
+        <th>Total Prod.</th>
+        <th>Total S/</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let venta of ventas">
+        <td>{{ venta.id }}</td>
+        <td>{{ venta.fecha | date:'short' }}</td>
+        <td>{{ venta.metodoPago }}</td>
+        <td>{{ venta.tipoComprobante }}</td>
+        <td>{{ venta.documentoCliente }}</td>
+        <td>{{ venta.totalProductos }}</td>
+        <td>{{ venta.totalVenta | number:'1.2-2' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #sinVentas>
+    <p>No tienes ventas registradas aún.</p>
+  </ng-template>
+</div>

@@ -5,8 +5,8 @@
     </div>
 
     <nav class="menu">
-      <button (click)="irANuevaVenta()">🛒 Nueva Venta</button>
-      <button>📜 Historial Ventas</button>
+      <button (click)="mostrarNuevaVenta()">🛒 Nueva Venta</button>
+      <button (click)="mostrarHistorial()">📜 Historial de Ventas</button>
     </nav>
 
     <div class="logout">
@@ -15,7 +15,18 @@
   </aside>
 
   <main class="contenido">
+  <ng-container *ngIf="mostrarNuevaVentaPanel">
+    <app-nueva-venta></app-nueva-venta>
+  </ng-container>
+
+  <ng-container *ngIf="mostrarHistorialPanel">
+    <app-vendedor-historial-ventas></app-vendedor-historial-ventas>
+  </ng-container>
+
+  <ng-container *ngIf="!mostrarNuevaVentaPanel && !mostrarHistorialPanel">
     <h1>Bienvenido al Panel del Vendedor</h1>
-    <p>Selecciona una opción para empezar.</p>
-  </main>
+    <p>Selecciona una opción del menú para comenzar.</p>
+  </ng-container>
+</main>
+
 </div>
