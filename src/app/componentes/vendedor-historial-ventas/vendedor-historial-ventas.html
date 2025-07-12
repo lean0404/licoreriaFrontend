@@ -4,10 +4,18 @@
   <div class="filtro-fechas">
     <label>Desde: <input type="date" [(ngModel)]="fechaDesde"></label>
     <label>Hasta: <input type="date" [(ngModel)]="fechaHasta"></label>
-    <button (click)="filtrarPorFechas()">Buscar</button>
+    <button (click)="filtrarPorFechas()">🔍 Buscar</button>
+    <button *ngIf="ventas.length > 0" (click)="emitirReporte()">📄 Emitir Reporte PDF</button>
   </div>
 
-  <table *ngIf="ventas.length > 0; else sinVentas">
+  <!-- 🔄 Spinner de carga -->
+  <div *ngIf="cargando" class="loader-container">
+    <div class="loader"></div>
+    <p>Cargando ventas...</p>
+  </div>
+
+  <!-- 🧾 Tabla de ventas -->
+  <table *ngIf="!cargando && ventas.length > 0; else sinVentas">
     <thead>
       <tr>
         <th>ID</th>
@@ -32,7 +40,8 @@
     </tbody>
   </table>
 
+  <!-- 📭 Sin ventas -->
   <ng-template #sinVentas>
-    <p>No tienes ventas registradas aún.</p>
+    <p *ngIf="!cargando">No tienes ventas registradas aún.</p>
   </ng-template>
 </div>

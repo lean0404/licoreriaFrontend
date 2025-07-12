@@ -15,6 +15,7 @@ export class VendedorHistorialVentasComponent {
   ventas: VentaHistorialDTO[] = [];
   fechaDesde = '';
   fechaHasta = '';
+  cargando = false; // 🌀 loader
 
   constructor(private ventaService: VentaService) {}
 
@@ -23,9 +24,16 @@ export class VendedorHistorialVentasComponent {
   }
 
   cargarHistorial(): void {
+    this.cargando = true;
     this.ventaService.obtenerHistorial().subscribe({
-      next: (data) => this.ventas = data,
-      error: (err) => console.error('Error al cargar historial', err)
+      next: (data) => {
+        this.ventas = data;
+        this.cargando = false;
+      },
+      error: (err) => {
+        console.error('Error al cargar historial', err);
+        this.cargando = false;
+      }
     });
   }
 
@@ -34,9 +42,41 @@ export class VendedorHistorialVentasComponent {
       alert("Selecciona el rango de fechas");
       return;
     }
+
+    this.cargando = true;
     this.ventaService.obtenerHistorialPorFechas(this.fechaDesde, this.fechaHasta).subscribe({
-      next: (data) => this.ventas = data,
-      error: (err) => console.error('Error al filtrar historial', err)
+      next: (data) => {
+        this.ventas = data;
+        this.cargando = false;
+      },
+      error: (err) => {
+        console.error('Error al filtrar historial', err);
+        this.cargando = false;
+      }
+    });
+  }
+
+  emitirReporte(): void {
+    if (!this.fechaDesde || !this.fechaHasta) {
+      alert("Primero selecciona un rango de fechas para emitir el reporte.");
+      return;
+    }
+
+    this.cargando = true;
+    this.ventaService.emitirReportePorFechas(this.fechaDesde, this.fechaHasta).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `reporte_ventas_${this.fechaDesde}_a_${this.fechaHasta}.pdf`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+        this.cargando = false;
+      },
+      error: (err) => {
+        console.error('Error al emitir reporte PDF', err);
+        this.cargando = false;
+      }
     });
   }
 }
