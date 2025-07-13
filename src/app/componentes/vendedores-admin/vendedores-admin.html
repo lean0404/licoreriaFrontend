@@ -1,0 +1,23 @@
+<div class="vendedores-container">
+  <h2>👤 Lista de Vendedores</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Actualizar Contraseña</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let vendedor of vendedores">
+        <td>{{ vendedor.id }}</td>
+        <td>{{ vendedor.username }}</td>
+        <td>
+          <input [(ngModel)]="contrasenas[vendedor.id]" placeholder="Nueva contraseña"/>
+          <button (click)="actualizarPassword(vendedor.id)">Actualizar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

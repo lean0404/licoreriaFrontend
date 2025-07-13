@@ -15,7 +15,7 @@ export class UsuariosAdminComponent {
   nuevoUsuario = {
     username: '',
     password: '',
-    roles: ['USER']
+    roles: ['VENDEDOR'] 
   };
 
   constructor(private authService: AuthService) {}
@@ -24,7 +24,7 @@ export class UsuariosAdminComponent {
     this.authService.registrarUsuario(this.nuevoUsuario).subscribe({
       next: () => {
         alert('Usuario registrado exitosamente');
-        this.nuevoUsuario = { username: '', password: '', roles: ['USER'] };
+        this.nuevoUsuario = { username: '', password: '', roles: ['VENDEDOR'] };
       },
       error: (err: any) => {
         console.error('Error al registrar usuario', err);
