@@ -1,0 +1,35 @@
+<div class="tipos-container">
+  <h2>🔧 Gestión de Tipos de Producto</h2>
+
+  <form (ngSubmit)="guardarTipo()" class="formulario">
+    <input
+      type="text"
+      [(ngModel)]="tipoNuevo.nombre"
+      name="nombre"
+      placeholder="Nombre del tipo de producto"
+      required
+    />
+    <button type="submit">{{ editando ? 'Actualizar' : 'Agregar' }}</button>
+    <button type="button" class="cancelar" *ngIf="editando" (click)="cancelar()">Cancelar</button>
+  </form>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nombre</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tipo of tipos; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ tipo.nombre }}</td>
+        <td>
+          <button (click)="editar(tipo)">✏️ Editar</button>
+          <button class="eliminar" (click)="eliminar(tipo.id!)">🗑️ Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

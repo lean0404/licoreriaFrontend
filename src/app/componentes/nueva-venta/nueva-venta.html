@@ -3,7 +3,14 @@
 
   <div class="filtros">
     <label>Buscar (tipo o nombre):</label>
-    <input type="text" [(ngModel)]="filtroTexto" placeholder="Ej: Whisky o Johnnie">
+    <input type="text"
+           [(ngModel)]="filtroTexto"
+           placeholder="Ej: Whisky o Johnnie"
+           (keydown)="soloLetras($event)"
+           (ngModelChange)="validarBuscar()">
+    <div *ngIf="errorBuscar" style="color: red;">
+      {{ errorBuscar }}
+    </div>
 
     <label>Precio mínimo:</label>
     <input type="number" [(ngModel)]="precioMin">
@@ -49,15 +56,23 @@
 
     <div class="comprobante">
       <label>Tipo Comprobante:</label>
-      <select [(ngModel)]="tipoComprobante">
+      <select [(ngModel)]="tipoComprobante" (change)="validarDocumento()">
         <option value="Boleta">Boleta</option>
         <option value="Factura">Factura</option>
       </select>
 
       <label *ngIf="tipoComprobante === 'Boleta'">DNI Cliente:</label>
       <label *ngIf="tipoComprobante === 'Factura'">RUC Cliente:</label>
-      <input type="text" [(ngModel)]="documentoCliente"
-             [placeholder]="tipoComprobante === 'Boleta' ? 'Ingrese DNI' : 'Ingrese RUC'">
+      <input type="text"
+             [(ngModel)]="documentoCliente"
+             [placeholder]="tipoComprobante === 'Boleta' ? 'Ingrese DNI' : 'Ingrese RUC'"
+             [attr.maxlength]="tipoComprobante === 'Boleta' ? 8 : 15"
+             inputmode="numeric"
+             (keydown)="soloNumeros($event)"
+             (ngModelChange)="validarDocumento()">
+      <div *ngIf="errorDocumento" style="color: red;">
+        {{ errorDocumento }}
+      </div>
     </div>
 
     <div class="metodo-pago">
@@ -69,6 +84,8 @@
       </select>
     </div>
 
-    <button (click)="finalizarVenta()">Finalizar Venta</button>
+    <button (click)="finalizarVenta()" [disabled]="errorDocumento || errorBuscar">
+      Finalizar Venta
+    </button>
   </div>
 </div>

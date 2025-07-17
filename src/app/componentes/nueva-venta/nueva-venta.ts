@@ -25,6 +25,9 @@ export class NuevaVentaComponent implements OnInit {
   tipoComprobante: string = 'Boleta';
   documentoCliente: string = '';
 
+  errorDocumento: string = '';
+  errorBuscar: string = '';
+
   private apiUrl = 'http://localhost:8080/api/ventas';
 
   constructor(
@@ -56,45 +59,87 @@ export class NuevaVentaComponent implements OnInit {
     return this.carrito.reduce((sum, i) => sum + (i.cantidad * i.precioUnitario), 0);
   }
 
-  finalizarVenta(): void {
-  if (!this.documentoCliente.trim()) {
-    alert(`Debe ingresar ${this.tipoComprobante === 'Boleta' ? 'DNI' : 'RUC'} del cliente.`);
-    return;
+  validarDocumento(): void {
+    if (this.tipoComprobante === 'Boleta') {
+      const dniPattern = /^[0-9]{8}$/;
+      this.errorDocumento = dniPattern.test(this.documentoCliente)
+        ? ''
+        : 'El DNI debe tener exactamente 8 dígitos.';
+    } else if (this.tipoComprobante === 'Factura') {
+      const rucPattern = /^[0-9]{1,15}$/;
+      this.errorDocumento = rucPattern.test(this.documentoCliente)
+        ? ''
+        : 'El RUC debe tener entre 1 y 15 dígitos.';
+    } else {
+      this.errorDocumento = '';
+    }
   }
 
-  const payload = {
-    tipoComprobante: this.tipoComprobante,
-    documentoCliente: this.documentoCliente,
-    metodoPago: this.metodoPago,
-    items: this.carrito.map(item => ({
-      productoId: item.producto.id,
-      cantidad: item.cantidad
-    }))
-  };
-
-  this.http.post(this.apiUrl, payload, {
-    responseType: 'blob',
-    withCredentials: true  // 🔥 importante para enviar la cookie de sesión
-  }).subscribe({
-    next: (blob) => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `venta_${this.tipoComprobante}_${this.documentoCliente}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(url);
-
-      alert('Venta registrada correctamente.');
-      this.carrito = [];
-      this.documentoCliente = '';
-    },
-    error: (err) => {
-      console.error('Error al registrar venta', err);
-      alert('Error al registrar venta');
+  soloNumeros(event: KeyboardEvent): void {
+    if (!/[0-9]/.test(event.key) && !['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+      event.preventDefault();
     }
-  });
-}
+  }
 
+  soloLetras(event: KeyboardEvent): void {
+    if (!/[a-zA-Z\s]/.test(event.key) && !['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+      event.preventDefault();
+    }
+  }
+
+  validarBuscar(): void {
+    const textoPattern = /^[a-zA-Z\s]*$/;
+    this.errorBuscar = textoPattern.test(this.filtroTexto)
+      ? ''
+      : 'Solo se permiten letras y espacios.';
+  }
+
+  finalizarVenta(): void {
+    this.validarDocumento();
+    this.validarBuscar();
+
+    if (this.errorDocumento || this.errorBuscar) {
+      alert('Por favor corrija los errores antes de finalizar la venta.');
+      return;
+    }
+
+    if (!this.documentoCliente.trim()) {
+      alert(`Debe ingresar ${this.tipoComprobante === 'Boleta' ? 'DNI' : 'RUC'} del cliente.`);
+      return;
+    }
+
+    const payload = {
+      tipoComprobante: this.tipoComprobante,
+      documentoCliente: this.documentoCliente,
+      metodoPago: this.metodoPago,
+      items: this.carrito.map(item => ({
+        productoId: item.producto.id,
+        cantidad: item.cantidad
+      }))
+    };
+
+    this.http.post(this.apiUrl, payload, {
+      responseType: 'blob',
+      withCredentials: true
+    }).subscribe({
+      next: (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `venta_${this.tipoComprobante}_${this.documentoCliente}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+
+        alert('Venta registrada correctamente.');
+        this.carrito = [];
+        this.documentoCliente = '';
+      },
+      error: (err) => {
+        console.error('Error al registrar venta', err);
+        alert('Error al registrar venta');
+      }
+    });
+  }
 }

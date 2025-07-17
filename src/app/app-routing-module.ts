@@ -8,8 +8,10 @@ import { VendedorDashboardComponent } from './componentes/vendedor-dashboard/ven
 import { NuevaVentaComponent } from './componentes/nueva-venta/nueva-venta';
 import { VendedorHistorialVentasComponent } from './componentes/vendedor-historial-ventas/vendedor-historial-ventas';
 import { VendedoresAdminComponent } from './componentes/vendedores-admin/vendedores-admin';
+import { AdminTiposProductos } from './componentes/admin-tiposproductos/admin-tiposproductos';
 
 import { adminGuard, vendedorGuard } from './auth.guard';
+import { Component } from '@angular/core';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -22,6 +24,11 @@ export const routes: Routes = [
   {
     path: 'admin/productos',
     component: ProductosAdminComponent,
+    canActivate: [adminGuard]
+  },
+  {
+    path: 'admin/tipos',
+    component: AdminTiposProductos,
     canActivate: [adminGuard]
   },
 
