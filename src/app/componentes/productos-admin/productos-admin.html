@@ -9,6 +9,7 @@
         <th>Precio (S/.)</th>
         <th>Stock</th>
         <th>Tipo</th>
+        <th>Marca</th>
         <th>Acciones</th>
       </tr>
     </thead>
@@ -19,6 +20,7 @@
         <td>{{ producto.precio }}</td>
         <td>{{ producto.stock }}</td>
         <td>{{ producto.tipoProductoNombre }}</td>
+        <td>{{ producto.marcaNombre }}</td>
         <td>
           <button (click)="editarProducto(producto)">✏️</button>
           <button (click)="confirmarEliminacion(producto.id!)">🗑️</button>
@@ -48,6 +50,14 @@
         <option [ngValue]="null" disabled selected>Seleccione un tipo</option>
         <option *ngFor="let tipo of tiposProducto" [ngValue]="tipo.id">
           {{ tipo.nombre }}
+        </option>
+      </select>
+
+      <label>Marca del Producto:</label>
+      <select [(ngModel)]="nuevoProducto.marcaId" name="marcaId" required>
+        <option [ngValue]="null" disabled selected>Seleccione una marca</option>
+        <option *ngFor="let marca of marcas" [ngValue]="marca.id">
+          {{ marca.nombre }}
         </option>
       </select>
 

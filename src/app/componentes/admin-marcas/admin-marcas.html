@@ -1,0 +1,35 @@
+<div class="marcas-container">
+  <h2>🏷️ Gestión de Marcas</h2>
+
+  <form (ngSubmit)="guardarMarca()" class="formulario">
+    <input
+      type="text"
+      [(ngModel)]="marcaNueva.nombre"
+      name="nombre"
+      placeholder="Nombre de la marca"
+      required
+    />
+    <button type="submit">{{ editando ? 'Actualizar' : 'Agregar' }}</button>
+    <button type="button" class="cancelar" *ngIf="editando" (click)="cancelar()">Cancelar</button>
+  </form>
+
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nombre</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let marca of marcas; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ marca.nombre }}</td>
+        <td>
+          <button (click)="editar(marca)">✏️ Editar</button>
+          <button class="eliminar" (click)="eliminar(marca.id!)">🗑️ Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

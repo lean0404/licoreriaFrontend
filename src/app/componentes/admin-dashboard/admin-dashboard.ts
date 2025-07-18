@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { ProductosAdminComponent } from '../productos-admin/productos-admin';
 import { UsuariosAdminComponent } from '../usuarios-admin/usuarios-admin';
 import { VendedoresAdminComponent } from '../vendedores-admin/vendedores-admin';
-import { AdminTiposProductos} from '../admin-tiposproductos/admin-tiposproductos';
+import { AdminTiposProductos } from '../admin-tiposproductos/admin-tiposproductos';
+import { AdminMarcasComponent } from '../admin-marcas/admin-marcas';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -14,7 +15,8 @@ import { AdminTiposProductos} from '../admin-tiposproductos/admin-tiposproductos
     ProductosAdminComponent,
     UsuariosAdminComponent,
     VendedoresAdminComponent,
-    AdminTiposProductos
+    AdminTiposProductos,
+    AdminMarcasComponent
   ],
   templateUrl: './admin-dashboard.html',
   styleUrls: ['./admin-dashboard.scss']
@@ -25,36 +27,42 @@ export class AdminDashboardComponent {
   mostrarProductos = false;
   mostrarUsuarios = false;
   mostrarVendedores = false;
-  mostrarTipos = false; // 👈 Nueva variable
+  mostrarTipos = false;
+  mostrarMarcas = false; 
 
   constructor(private router: Router) {}
 
-  gestionarProductos(): void {
-    this.mostrarProductos = true;
+  resetMenu(): void {
+    this.mostrarProductos = false;
     this.mostrarUsuarios = false;
     this.mostrarVendedores = false;
     this.mostrarTipos = false;
+    this.mostrarMarcas = false; 
+  }
+
+  gestionarProductos(): void {
+    this.resetMenu();
+    this.mostrarProductos = true;
   }
 
   gestionarUsuarios(): void {
+    this.resetMenu();
     this.mostrarUsuarios = true;
-    this.mostrarProductos = false;
-    this.mostrarVendedores = false;
-    this.mostrarTipos = false;
   }
 
   gestionarVendedores(): void {
+    this.resetMenu();
     this.mostrarVendedores = true;
-    this.mostrarProductos = false;
-    this.mostrarUsuarios = false;
-    this.mostrarTipos = false;
   }
 
-  gestionarTipos(): void { // 👈 Nuevo método
+  gestionarTipos(): void {
+    this.resetMenu();
     this.mostrarTipos = true;
-    this.mostrarProductos = false;
-    this.mostrarUsuarios = false;
-    this.mostrarVendedores = false;
+  }
+
+  gestionarMarcas(): void { 
+    this.resetMenu();
+    this.mostrarMarcas = true;
   }
 
   verReportes(): void {

@@ -3,8 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Producto } from '../../model/producto';
 import { TipoProducto } from '../../model/tipo-producto.model';
+import { Marca } from '../../model/marca';
 import { ProductoService } from '../../servicios/producto';
 import { TipoProductoService } from '../../servicios/tipo-producto';
+import { MarcaService } from '../../servicios/marca';
 
 @Component({
   selector: 'app-productos-admin',
@@ -16,26 +18,29 @@ import { TipoProductoService } from '../../servicios/tipo-producto';
 export class ProductosAdminComponent implements OnInit {
   productos: Producto[] = [];
   tiposProducto: TipoProducto[] = [];
+  marcas: Marca[] = [];
 
-  // Adaptado a tu ProductoRequest / ProductoResponse
   nuevoProducto = {
     nombre: '',
     descripcion: '',
     precio: 0,
     stock: 0,
-    tipoProductoId: null as number | null
+    tipoProductoId: null as number | null,
+    marcaId: null as number | null
   };
 
   editandoId: number | null = null;
 
   constructor(
     private productoService: ProductoService,
-    private tipoProductoService: TipoProductoService
+    private tipoProductoService: TipoProductoService,
+    private marcaService: MarcaService
   ) {}
 
   ngOnInit(): void {
     this.cargarProductos();
     this.cargarTiposProducto();
+    this.cargarMarcas();
   }
 
   cargarProductos(): void {
@@ -49,6 +54,13 @@ export class ProductosAdminComponent implements OnInit {
     this.tipoProductoService.obtenerTiposProducto().subscribe({
       next: (tipos) => this.tiposProducto = tipos,
       error: (err) => console.error('Error al cargar tipos', err)
+    });
+  }
+
+  cargarMarcas(): void {
+    this.marcaService.getMarcas().subscribe({
+      next: (marcas: Marca[]) => this.marcas = marcas,
+      error: (err: any) => console.error('Error al cargar marcas', err)
     });
   }
 
@@ -78,7 +90,8 @@ export class ProductosAdminComponent implements OnInit {
       descripcion: producto.descripcion,
       precio: producto.precio,
       stock: producto.stock,
-      tipoProductoId: producto.tipoProductoId ?? null
+      tipoProductoId: producto.tipoProductoId ?? null,
+      marcaId: producto.marcaId ?? null
     };
     this.editandoId = producto.id ?? null;
   }
@@ -106,7 +119,8 @@ export class ProductosAdminComponent implements OnInit {
       descripcion: '',
       precio: 0,
       stock: 0,
-      tipoProductoId: null
+      tipoProductoId: null,
+      marcaId: null
     };
     this.editandoId = null;
   }

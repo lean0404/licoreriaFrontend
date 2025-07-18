@@ -12,6 +12,7 @@ import { AdminTiposProductos } from './componentes/admin-tiposproductos/admin-ti
 
 import { adminGuard, vendedorGuard } from './auth.guard';
 import { Component } from '@angular/core';
+import { AdminMarcasComponent } from './componentes/admin-marcas/admin-marcas';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -29,6 +30,11 @@ export const routes: Routes = [
   {
     path: 'admin/tipos',
     component: AdminTiposProductos,
+    canActivate: [adminGuard]
+  },
+  {
+    path: 'admin/marcas',
+    component: AdminMarcasComponent,
     canActivate: [adminGuard]
   },
 

@@ -6,4 +6,6 @@ export interface Producto {
   stock: number;
   tipoProductoId?: number;
   tipoProductoNombre?: string;
+  marcaId?: number;
+  marcaNombre? : string;
 }

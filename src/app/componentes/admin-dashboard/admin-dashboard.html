@@ -8,7 +8,8 @@
       <button (click)="gestionarProductos()">📦 Productos</button>
       <button (click)="gestionarUsuarios()">👤 Usuarios</button>
       <button (click)="gestionarVendedores()">👥 Vendedores</button>
-      <button (click)="gestionarTipos()">🔧 Tipos Producto</button> 
+      <button (click)="gestionarTipos()">🔧 Tipos Producto</button>
+      <button (click)="gestionarMarcas()">🏷️ Marcas</button> <!-- NUEVO -->
       <button (click)="verReportes()">📊 Reportes</button>
     </nav>
 
@@ -31,10 +32,14 @@
     </ng-container>
 
     <ng-container *ngIf="mostrarTipos">
-      <app-admin-tiposproductos></app-admin-tiposproductos> <!-- Nuevo componente -->
+      <app-admin-tiposproductos></app-admin-tiposproductos>
     </ng-container>
 
-    <ng-container *ngIf="!mostrarProductos && !mostrarUsuarios && !mostrarVendedores && !mostrarTipos">
+    <ng-container *ngIf="mostrarMarcas">
+      <app-admin-marcas></app-admin-marcas> <!-- NUEVO -->
+    </ng-container>
+
+    <ng-container *ngIf="!mostrarProductos && !mostrarUsuarios && !mostrarVendedores && !mostrarTipos && !mostrarMarcas">
       <h1>Bienvenido al Panel de Administrador</h1>
       <p>Selecciona una opción del menú para continuar.</p>
     </ng-container>
