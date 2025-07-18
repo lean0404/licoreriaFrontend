@@ -6,6 +6,7 @@ import { UsuariosAdminComponent } from '../usuarios-admin/usuarios-admin';
 import { VendedoresAdminComponent } from '../vendedores-admin/vendedores-admin';
 import { AdminTiposProductos } from '../admin-tiposproductos/admin-tiposproductos';
 import { AdminMarcasComponent } from '../admin-marcas/admin-marcas';
+import { ReportesAdminComponent } from '../reportes-admin/reportes-admin';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -16,7 +17,8 @@ import { AdminMarcasComponent } from '../admin-marcas/admin-marcas';
     UsuariosAdminComponent,
     VendedoresAdminComponent,
     AdminTiposProductos,
-    AdminMarcasComponent
+    AdminMarcasComponent,
+    ReportesAdminComponent
   ],
   templateUrl: './admin-dashboard.html',
   styleUrls: ['./admin-dashboard.scss']
@@ -29,6 +31,7 @@ export class AdminDashboardComponent {
   mostrarVendedores = false;
   mostrarTipos = false;
   mostrarMarcas = false; 
+  mostrarReportes= false;
 
   constructor(private router: Router) {}
 
@@ -38,6 +41,7 @@ export class AdminDashboardComponent {
     this.mostrarVendedores = false;
     this.mostrarTipos = false;
     this.mostrarMarcas = false; 
+    this.mostrarReportes= false;
   }
 
   gestionarProductos(): void {
@@ -66,8 +70,10 @@ export class AdminDashboardComponent {
   }
 
   verReportes(): void {
-    alert('Funcionalidad de reportes aún no implementada.');
+  this.resetMenu();
+  this.mostrarReportes = true;
   }
+
 
   cerrarSesion(): void {
     localStorage.clear();

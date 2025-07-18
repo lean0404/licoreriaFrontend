@@ -1,0 +1,41 @@
+<div class="reportes-container">
+  <h2>📊 Reportes Estadísticos</h2>
+
+  <div class="card">
+    <h3>🛍 Productos más vendidos</h3>
+    <label>Desde:</label>
+    <input type="date" [(ngModel)]="fechaInicio">
+    <label>Hasta:</label>
+    <input type="date" [(ngModel)]="fechaFin">
+    <button (click)="consultarMasVendido()">Consultar</button>
+    
+    <div *ngIf="errorMasVendidos" class="error">{{ errorMasVendidos }}</div>
+    <ul *ngIf="listaMasVendidos.length > 0">
+      <li *ngFor="let prod of listaMasVendidos">
+        {{ prod.nombre }} - {{ prod.cantidadVendida }} ventas
+      </li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🛍 Productos menos vendidos</h3>
+    <label>Desde:</label>
+    <input type="date" [(ngModel)]="fechaInicio">
+    <label>Hasta:</label>
+    <input type="date" [(ngModel)]="fechaFin">
+    <button (click)="consultarMenosVendido()">Consultar</button>
+
+    <div *ngIf="errorMenosVendidos" class="error">{{ errorMenosVendidos }}</div>
+    <ul *ngIf="listaMenosVendidos.length > 0">
+      <li *ngFor="let prod of listaMenosVendidos">
+        {{ prod.nombre }} - {{ prod.cantidadVendida }} ventas
+      </li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>💳 Método de pago más usado</h3>
+    <button (click)="consultarMetodoPagoFrecuente()">Consultar</button>
+    <p *ngIf="metodoFrecuente">Resultado: {{ metodoFrecuente }}</p>
+  </div>
+</div>
