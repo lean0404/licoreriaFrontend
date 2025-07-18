@@ -1,38 +1,43 @@
 <div class="nueva-venta-layout">
-  <h2>Nueva Venta</h2>
+  <h2 class="titulo">🛒 Nueva Venta</h2>
 
   <div class="filtros">
-    <label>Buscar (tipo o nombre):</label>
-    <input type="text"
-           [(ngModel)]="filtroTexto"
-           placeholder="Ej: Whisky o Johnnie"
-           (keydown)="soloLetras($event)"
-           (ngModelChange)="validarBuscar()">
-    <div *ngIf="errorBuscar" style="color: red;">
-      {{ errorBuscar }}
+    <div class="campo">
+      <label>🔍 Buscar (tipo/marca/nombre):</label>
+      <input type="text"
+             [(ngModel)]="filtroTexto"
+             placeholder="Ej: Whisky o Johnnie Walker"
+             (keydown)="soloLetras($event)"
+             (ngModelChange)="validarBuscar()">
+      <div class="error" *ngIf="errorBuscar">{{ errorBuscar }}</div>
     </div>
 
-    <label>Precio mínimo:</label>
-    <input type="number" [(ngModel)]="precioMin">
+    <div class="campo">
+      <label>💵 Precio mínimo:</label>
+      <input type="number" [(ngModel)]="precioMin">
+    </div>
 
-    <label>Precio máximo:</label>
-    <input type="number" [(ngModel)]="precioMax">
+    <div class="campo">
+      <label>💰 Precio máximo:</label>
+      <input type="number" [(ngModel)]="precioMax">
+    </div>
   </div>
 
   <div class="productos-grid">
     <div class="producto-card"
-      *ngFor="let producto of productos | filtroTipo:filtroTexto:precioMin:precioMax">
+         *ngFor="let producto of productos | filtroTipo:filtroTexto:precioMin:precioMax">
       <h3>{{ producto.nombre }}</h3>
       <p>{{ producto.descripcion }}</p>
-      <p>Precio: S/. {{ producto.precio }}</p>
-      <p>Stock: {{ producto.stock }}</p>
-      <p>Tipo: {{ producto.tipoProductoNombre }}</p>
-      <button (click)="agregarProducto(producto)">Añadir</button>
+      <p>💵 Precio: S/. {{ producto.precio }}</p>
+      <p>📦 Stock: {{ producto.stock }}</p>
+      <p>🏷️ Tipo: {{ producto.tipoProductoNombre }}</p>
+      <p>🏭 Marca: {{ producto.marcaNombre }}</p>
+      <button (click)="agregarProducto(producto)">➕ Añadir</button>
     </div>
   </div>
 
   <div class="carrito" *ngIf="carrito.length > 0">
-    <h3>Carrito</h3>
+    <h3>🛍️ Carrito</h3>
     <table>
       <thead>
         <tr>
@@ -51,18 +56,18 @@
     </table>
 
     <div class="total">
-      <p>Total: S/. {{ calcularTotal() }}</p>
+      <p>💳 Total: <strong>S/. {{ calcularTotal() }}</strong></p>
     </div>
 
     <div class="comprobante">
-      <label>Tipo Comprobante:</label>
+      <label>🧾 Tipo Comprobante:</label>
       <select [(ngModel)]="tipoComprobante" (change)="validarDocumento()">
         <option value="Boleta">Boleta</option>
         <option value="Factura">Factura</option>
       </select>
 
-      <label *ngIf="tipoComprobante === 'Boleta'">DNI Cliente:</label>
-      <label *ngIf="tipoComprobante === 'Factura'">RUC Cliente:</label>
+      <label *ngIf="tipoComprobante === 'Boleta'">🔢 DNI Cliente:</label>
+      <label *ngIf="tipoComprobante === 'Factura'">🔢 RUC Cliente:</label>
       <input type="text"
              [(ngModel)]="documentoCliente"
              [placeholder]="tipoComprobante === 'Boleta' ? 'Ingrese DNI' : 'Ingrese RUC'"
@@ -70,13 +75,11 @@
              inputmode="numeric"
              (keydown)="soloNumeros($event)"
              (ngModelChange)="validarDocumento()">
-      <div *ngIf="errorDocumento" style="color: red;">
-        {{ errorDocumento }}
-      </div>
+      <div class="error" *ngIf="errorDocumento">{{ errorDocumento }}</div>
     </div>
 
     <div class="metodo-pago">
-      <label>Método de Pago:</label>
+      <label>💳 Método de Pago:</label>
       <select [(ngModel)]="metodoPago">
         <option value="Efectivo">Efectivo</option>
         <option value="Yape">Yape</option>
@@ -84,8 +87,10 @@
       </select>
     </div>
 
-    <button (click)="finalizarVenta()" [disabled]="errorDocumento || errorBuscar">
-      Finalizar Venta
+    <button class="btn-finalizar"
+            (click)="finalizarVenta()"
+            [disabled]="errorDocumento || errorBuscar">
+      ✅ Finalizar Venta
     </button>
   </div>
 </div>

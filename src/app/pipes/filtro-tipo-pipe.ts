@@ -20,7 +20,8 @@ export class FiltroTipoPipe implements PipeTransform {
       const coincideTexto =
         !textoLower ||
         p.nombre?.toLowerCase().includes(textoLower) ||
-        p.tipoProductoNombre?.toLowerCase().includes(textoLower);
+        p.tipoProductoNombre?.toLowerCase().includes(textoLower) ||
+        p.marcaNombre?.toLowerCase().includes(textoLower); 
 
       const coincideMin = precioMin == null || p.precio >= precioMin;
       const coincideMax = precioMax == null || p.precio <= precioMax;

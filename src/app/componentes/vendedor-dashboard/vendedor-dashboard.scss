@@ -1,56 +1,53 @@
 .vendedor-layout {
   display: flex;
+  flex-direction: column;
   height: 100vh;
-  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #e0eafc, #cfdef3);
+  font-family: 'Segoe UI', sans-serif;
 
-  .sidebar {
-    width: 220px;
-    background: #1a2b40;
-    color: #fff;
-    padding: 20px;
+  .navbar {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 16px 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 
-    .usuario-info {
-      h3 {
-        margin: 0 0 20px;
-        text-align: center;
-      }
+    .usuario-info h3 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #2c3e50;
+      font-weight: bold;
     }
 
-    .menu {
+    .menu, .logout {
+      display: flex;
+      gap: 12px;
+
       button {
-        width: 100%;
-        padding: 12px;
-        margin-bottom: 10px;
-        background: #324a63;
-        color: #fff;
+        background: rgba(255, 255, 255, 0.4);
         border: none;
+        padding: 10px 20px;
+        border-radius: 12px;
+        font-size: 1rem;
+        color: #2c3e50;
         cursor: pointer;
-        border-radius: 6px;
-        transition: background 0.3s;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 
         &:hover {
-          background: #4b6b8f;
+          background: rgba(255, 255, 255, 0.6);
+          transform: translateY(-2px);
         }
       }
-    }
 
-    .logout {
-      margin-top: auto;
-
-      button {
-        width: 100%;
-        padding: 10px;
-        background: #c0392b;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-        border-radius: 6px;
-        transition: background 0.3s;
+      .logout-btn {
+        background: #e74c3c;
+        color: white;
 
         &:hover {
-          background: #e74c3c;
+          background: #c0392b;
         }
       }
     }
@@ -58,7 +55,15 @@
 
   .contenido {
     flex: 1;
-    padding: 30px;
-    background: #f7f9fa;
+    padding: 40px;
+    overflow-y: auto;
+
+    h1 {
+      color: #2c3e50;
+    }
+
+    p {
+      color: #555;
+    }
   }
 }

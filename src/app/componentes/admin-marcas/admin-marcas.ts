@@ -65,4 +65,5 @@ export class AdminMarcasComponent implements OnInit {
     this.marcaNueva = { id: 0, nombre: '' };
     this.editando = false;
   }
+  
 }

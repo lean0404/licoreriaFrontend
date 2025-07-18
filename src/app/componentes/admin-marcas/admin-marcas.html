@@ -1,17 +1,26 @@
 <div class="marcas-container">
   <h2>🏷️ Gestión de Marcas</h2>
 
-  <form (ngSubmit)="guardarMarca()" class="formulario">
-    <input
-      type="text"
-      [(ngModel)]="marcaNueva.nombre"
-      name="nombre"
-      placeholder="Nombre de la marca"
-      required
-    />
-    <button type="submit">{{ editando ? 'Actualizar' : 'Agregar' }}</button>
-    <button type="button" class="cancelar" *ngIf="editando" (click)="cancelar()">Cancelar</button>
-  </form>
+  <form (ngSubmit)="guardarMarca()" class="formulario" #marcaForm="ngForm">
+  <input
+    type="text"
+    [(ngModel)]="marcaNueva.nombre"
+    name="nombre"
+    placeholder="Nombre de la nueva marca"
+    required
+    pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$"
+    #nombreInput="ngModel"
+  />
+  <div class="error" *ngIf="nombreInput.invalid && nombreInput.touched">
+    Solo se permiten letras.
+  </div>
+
+  <button type="submit" [disabled]="marcaForm.invalid">
+    {{ editando ? 'Actualizar' : 'Agregar' }}
+  </button>
+  <button type="button" class="cancelar" *ngIf="editando" (click)="cancelar()">Cancelar</button>
+</form>
+
 
   <table class="tabla">
     <thead>

@@ -1,32 +1,31 @@
 <div class="vendedor-layout">
-  <aside class="sidebar">
+  <header class="navbar">
     <div class="usuario-info">
       <h3>{{ username }}</h3>
     </div>
 
     <nav class="menu">
       <button (click)="mostrarNuevaVenta()">🛒 Nueva Venta</button>
-      <button (click)="mostrarHistorial()">📜 Historial de Ventas</button>
+      <button (click)="mostrarHistorial()">📜 Historial</button>
     </nav>
 
     <div class="logout">
-      <button (click)="cerrarSesion()">🔓 Cerrar Sesión</button>
+      <button class="logout-btn" (click)="cerrarSesion()">🔓 Cerrar</button>
     </div>
-  </aside>
+  </header>
 
   <main class="contenido">
-  <ng-container *ngIf="mostrarNuevaVentaPanel">
-    <app-nueva-venta></app-nueva-venta>
-  </ng-container>
+    <ng-container *ngIf="mostrarNuevaVentaPanel">
+      <app-nueva-venta></app-nueva-venta>
+    </ng-container>
 
-  <ng-container *ngIf="mostrarHistorialPanel">
-    <app-vendedor-historial-ventas></app-vendedor-historial-ventas>
-  </ng-container>
+    <ng-container *ngIf="mostrarHistorialPanel">
+      <app-vendedor-historial-ventas></app-vendedor-historial-ventas>
+    </ng-container>
 
-  <ng-container *ngIf="!mostrarNuevaVentaPanel && !mostrarHistorialPanel">
-    <h1>Bienvenido al Panel del Vendedor</h1>
-    <p>Selecciona una opción del menú para comenzar.</p>
-  </ng-container>
-</main>
-
+    <ng-container *ngIf="!mostrarNuevaVentaPanel && !mostrarHistorialPanel">
+      <h1>Bienvenido al Panel del Vendedor</h1>
+      <p>Selecciona una opción del menú para comenzar.</p>
+    </ng-container>
+  </main>
 </div>
