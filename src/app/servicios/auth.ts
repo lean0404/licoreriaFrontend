@@ -47,4 +47,12 @@ export class AuthService {
       { responseType: 'text', withCredentials: true }
     );
   }
+  actualizarVendedor(id: number, datos: { username: string; password: string; roles: string[] }): Observable<string> {
+  return this.http.put(
+    `${this.url}/vendedores/${id}`,
+    datos,
+    { responseType: 'text', withCredentials: true }
+  );
+}
+
 }

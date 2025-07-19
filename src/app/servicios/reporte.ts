@@ -26,4 +26,18 @@ export class ReporteService {
       withCredentials: true
     });
   }
+
+  descargarMasVendidosPDF(desde: string, hasta: string): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/producto-mas-vendido/pdf?desde=${desde}&hasta=${hasta}`, {
+      responseType: 'blob',
+      withCredentials: true
+    });
+  }
+
+  descargarMenosVendidosPDF(desde: string, hasta: string): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/producto-menos-vendido/pdf?desde=${desde}&hasta=${hasta}`, {
+      responseType: 'blob',
+      withCredentials: true
+    });
+  }
 }

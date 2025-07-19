@@ -8,7 +8,8 @@
     <label>Hasta:</label>
     <input type="date" [(ngModel)]="fechaFin">
     <button (click)="consultarMasVendido()">Consultar</button>
-    
+    <button (click)="descargarMasVendidosPDF()" [disabled]="!listaMasVendidos.length">📄 Exportar PDF</button>
+
     <div *ngIf="errorMasVendidos" class="error">{{ errorMasVendidos }}</div>
     <ul *ngIf="listaMasVendidos.length > 0">
       <li *ngFor="let prod of listaMasVendidos">
@@ -24,6 +25,7 @@
     <label>Hasta:</label>
     <input type="date" [(ngModel)]="fechaFin">
     <button (click)="consultarMenosVendido()">Consultar</button>
+    <button (click)="descargarMenosVendidosPDF()" [disabled]="!listaMenosVendidos.length">📄 Exportar PDF</button>
 
     <div *ngIf="errorMenosVendidos" class="error">{{ errorMenosVendidos }}</div>
     <ul *ngIf="listaMenosVendidos.length > 0">

@@ -6,10 +6,19 @@
       type="text"
       [(ngModel)]="tipoNuevo.nombre"
       name="nombre"
+      #nombreInput="ngModel"
       placeholder="Nombre del tipo de producto"
       required
+      pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$"
     />
-    <button type="submit">{{ editando ? 'Actualizar' : 'Agregar' }}</button>
+    <div class="error" *ngIf="nombreInput.invalid && nombreInput.touched">
+      <small *ngIf="nombreInput.errors?.['required']">El nombre es obligatorio.</small>
+      <small *ngIf="nombreInput.errors?.['pattern']">Solo se permiten letras y espacios.</small>
+    </div>
+
+    <button type="submit" [disabled]="nombreInput.invalid">
+      {{ editando ? 'Actualizar' : 'Agregar' }}
+    </button>
     <button type="button" class="cancelar" *ngIf="editando" (click)="cancelar()">Cancelar</button>
   </form>
 

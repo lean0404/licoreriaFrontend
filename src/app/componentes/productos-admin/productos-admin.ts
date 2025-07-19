@@ -29,6 +29,7 @@ export class ProductosAdminComponent implements OnInit {
     marcaId: null as number | null
   };
 
+  errores: string[] = [];
   editandoId: number | null = null;
 
   constructor(
@@ -64,7 +65,36 @@ export class ProductosAdminComponent implements OnInit {
     });
   }
 
+  validarFormulario(): boolean {
+    this.errores = [];
+
+    if (!this.nuevoProducto.nombre.trim()) {
+      this.errores.push('El nombre es obligatorio.');
+    }
+    if (!this.nuevoProducto.descripcion.trim()) {
+      this.errores.push('La descripción es obligatoria.');
+    }
+    if (this.nuevoProducto.precio <= 0) {
+      this.errores.push('El precio debe ser mayor que cero.');
+    }
+    if (this.nuevoProducto.stock < 0) {
+      this.errores.push('El stock no puede ser negativo.');
+    }
+    if (!this.nuevoProducto.tipoProductoId) {
+      this.errores.push('Debe seleccionar un tipo de producto.');
+    }
+    if (!this.nuevoProducto.marcaId) {
+      this.errores.push('Debe seleccionar una marca.');
+    }
+
+    return this.errores.length === 0;
+  }
+
   guardarProducto(): void {
+    if (!this.validarFormulario()) {
+      return;
+    }
+
     if (this.editandoId) {
       this.productoService.actualizarProducto(this.editandoId, this.nuevoProducto).subscribe({
         next: () => {
@@ -94,6 +124,7 @@ export class ProductosAdminComponent implements OnInit {
       marcaId: producto.marcaId ?? null
     };
     this.editandoId = producto.id ?? null;
+    this.errores = [];
   }
 
   confirmarEliminacion(id: number): void {
@@ -123,5 +154,6 @@ export class ProductosAdminComponent implements OnInit {
       marcaId: null
     };
     this.editandoId = null;
+    this.errores = [];
   }
 }

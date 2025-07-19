@@ -29,26 +29,24 @@ export class AdminTiposProductos implements OnInit {
   }
 
   guardarTipo(): void {
-  const nombreValido = this.tipoNuevo.nombre && this.tipoNuevo.nombre.trim() !== '';
-  if (!nombreValido) {
-    alert('El nombre del tipo de producto no puede estar vacío');
-    return;
+    const nombreValido = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$/.test(this.tipoNuevo.nombre.trim());
+    if (!nombreValido) {
+      alert('El nombre debe contener solo letras y espacios.');
+      return;
+    }
+
+    if (this.editando && this.tipoNuevo.id && this.tipoNuevo.id > 0) {
+      this.tipoService.actualizarTipo(this.tipoNuevo.id, this.tipoNuevo).subscribe(() => {
+        this.obtenerTipos();
+        this.cancelar();
+      });
+    } else {
+      this.tipoService.crearTipo(this.tipoNuevo).subscribe(() => {
+        this.obtenerTipos();
+        this.cancelar();
+      });
+    }
   }
-
-  if (this.editando && this.tipoNuevo.id && this.tipoNuevo.id > 0) {
-    this.tipoService.actualizarTipo(this.tipoNuevo.id, this.tipoNuevo).subscribe(() => {
-      this.obtenerTipos();
-      this.cancelar();
-    });
-  } else {
-    this.tipoService.crearTipo(this.tipoNuevo).subscribe(() => {
-      this.obtenerTipos();
-      this.cancelar();
-    });
-  }
-}
-
-
 
   editar(tipo: TipoProducto): void {
     this.tipoNuevo = { ...tipo };

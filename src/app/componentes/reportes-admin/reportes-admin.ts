@@ -85,4 +85,40 @@ export class ReportesAdminComponent {
       }
     });
   }
+
+  descargarMasVendidosPDF() {
+  if (!this.fechaInicio || !this.fechaFin) {
+    alert('Primero debes seleccionar las fechas.');
+    return;
+  }
+
+  this.reporteService.descargarMasVendidosPDF(this.fechaInicio, this.fechaFin).subscribe({
+    next: (pdf: Blob) => this.descargarArchivo(pdf, 'mas_vendidos.pdf'),
+    error: () => alert('Error al generar el PDF de productos más vendidos.')
+  });
+}
+
+descargarMenosVendidosPDF() {
+  if (!this.fechaInicio || !this.fechaFin) {
+    alert('Primero debes seleccionar las fechas.');
+    return;
+  }
+
+  this.reporteService.descargarMenosVendidosPDF(this.fechaInicio, this.fechaFin).subscribe({
+    next: (pdf: Blob) => this.descargarArchivo(pdf, 'menos_vendidos.pdf'),
+    error: () => alert('Error al generar el PDF de productos menos vendidos.')
+  });
+}
+
+private descargarArchivo(blob: Blob, nombreArchivo: string) {
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = nombreArchivo;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  window.URL.revokeObjectURL(url);
+}
+
 }

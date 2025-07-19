@@ -1,40 +1,67 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { UsuarioService } from '../../servicios/usuario';
+import { AuthService } from '../../servicios/auth';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-vendedores-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule],
   templateUrl: './vendedores-admin.html',
-  styleUrls: ['./vendedores-admin.scss']
+  styleUrls: ['./vendedores-admin.scss'],
+  imports: [CommonModule, FormsModule]  // <-- IMPORTANTE
 })
 export class VendedoresAdminComponent implements OnInit {
+  vendedores: { id: number; username: string; }[] = [];
+  contrasenas: { [id: number]: string } = {};
 
-  vendedores: any[] = [];
-  contrasenas: { [key: number]: string } = {};
-
-  constructor(private usuarioService: UsuarioService) {}
+  constructor(private authService: AuthService, private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.usuarioService.listarVendedores().subscribe({
-      next: (data) => this.vendedores = data,
-      error: (err) => console.error('Error al cargar vendedores', err)
+    this.cargarVendedores();
+  }
+
+  cargarVendedores(): void {
+    this.http.get<{ id: number; username: string; }[]>('http://localhost:8080/api/auth/vendedores', {
+      withCredentials: true
+    }).subscribe({
+      next: data => {
+        this.vendedores = data;
+        this.contrasenas = {};
+      },
+      error: err => {
+        console.error('Error al cargar vendedores', err);
+        alert('No se pudo cargar la lista de vendedores');
+      }
     });
   }
 
   actualizarPassword(id: number): void {
-    const nuevaPass = this.contrasenas[id];
-    if (!nuevaPass) return;
+    const nuevaPassword = this.contrasenas[id]?.trim();
 
-    this.usuarioService.actualizarPassword(id, nuevaPass).subscribe({
+    if (!nuevaPassword) {
+      alert('Ingrese una nueva contraseña');
+      return;
+    }
+
+    const username = this.vendedores.find(v => v.id === id)?.username;
+
+    if (!username) {
+      alert('Usuario no encontrado');
+      return;
+    }
+
+    this.authService.actualizarVendedor(id, {
+      username,
+      password: nuevaPassword,
+      roles: ['VENDEDOR']
+    }).subscribe({
       next: () => {
-        alert('Contraseña actualizada');
+        alert('Contraseña actualizada correctamente');
         this.contrasenas[id] = '';
       },
-      error: (err) => {
-        console.error('Error al actualizar contraseña', err);
+      error: err => {
+        console.error('Error al actualizar vendedor', err);
         alert('No se pudo actualizar la contraseña');
       }
     });
